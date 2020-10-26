@@ -1,12 +1,16 @@
-import React from "react";
+import React from 'react';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
+
 function CartIcon() {
+
+
+
     return (
-    <div>
+    <div className="cartIconBox">
         <ShoppingCartIcon/>
     </div>
-);
+)
 
 }
 

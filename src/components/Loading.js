@@ -1,8 +1,13 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Ball from './multimedia/ball.svg';
+import './css/loading.css';
 
 function Loading() {
-  return <CircularProgress disableShrink />;
+  return (
+    <div>
+      <img className="rotate-scale-down loadingIcon" src={Ball} />
+    </div>
+    );
 }
 
 

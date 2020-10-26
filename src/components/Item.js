@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import {NavLink} from 'react-router-dom';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -10,12 +11,9 @@ import Collapse from '@material-ui/core/Collapse';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { sizing } from '@material-ui/system';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import logo from './multimedia/logo.png';
+import {CartContext} from './context/CartContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,50 +45,62 @@ export default function Item(props) {
     setExpanded(!expanded);
   };
 
+  const [cart, setCart] = useContext(CartContext);
+  const addToCart = () => {
+     const player = props.player
+      setCart(currentCart => [...currentCart, player])
+  }
+
   return (
     <div className="">
-    <Card key={props.producto.id} className="card">
-      <CardHeader
-        title={props.producto.id}
-      />
-      <CardMedia component="img"
-      src={props.producto.foto}
-        className= {classes.media}
-        title={classes.name}
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-            {props.producto.position}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-            <AddShoppingCartIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-        <Typography>${props.producto.precio}</Typography>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Card key={props.player.id} className="card">
+      <NavLink to={`/item/${props.player.id}`} className="cardPlayerName">
+        <CardHeader
+          title={props.player.name}
+        />
+      </NavLink>
+      <NavLink to={`/item/${props.player.id}`}>
+        <CardMedia component="img"
+        src={props.player.photo}
+          className= {classes.media}
+          title={classes.name}
+        />
+        </NavLink>
         <CardContent>
-          <Typography paragraph>Descripción del producto:</Typography>
-          <Typography paragraph>
-          Descripción extendida
-          </Typography>
+          
+            <Typography variant="body2" color="textSecondary" component="p">
+                {props.player.position}
+            </Typography>
+          
         </CardContent>
-      </Collapse>
-    </Card>
+        <CardActions disableSpacing>
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon />
+          </IconButton>
+          <IconButton aria-label="share">
+              <AddShoppingCartIcon onClick={addToCart} />
+          </IconButton>
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded,
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+          <Typography>${props.player.price}</Typography>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>Descripción del jugador:</Typography>
+            <Typography paragraph>
+            {props.player.bio}
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
     </div>
   );
 }
